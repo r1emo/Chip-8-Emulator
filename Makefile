@@ -1,13 +1,13 @@
 SRC_DIR = src
 BUILD_DIR = build
-CC = clang++
+CC = gcc
 SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
 
 OBJ_NAME = chip8
 
 INCLUDE_PATHS = -I/Library/Frameworks/SDL2.framework/Headers
 FRAMEWORKS_PATHS = -F/Library/Frameworks
-COMPILER_FLAGS = -std=c++20 -Wall -O0 -g
+COMPILER_FLAGS = -std=c11 -Wall -O0 -g
 FRAMEWORKS_FLAGS = -framework SDL2
 
 all:

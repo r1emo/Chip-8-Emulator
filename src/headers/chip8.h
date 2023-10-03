@@ -1,50 +1,48 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
-#include <string>
-
-class chip8
+typedef struct
 {
-  public:
-    chip8();
-    int loadGame(std::string fileName);
+  // current opcode
+  unsigned short opcode;
 
-  private:
-    // current opcode
-    unsigned short opcode;
+  unsigned char memory[4096];
 
-    unsigned char memory[4096];
-    
-    // registers
-    unsigned char vReg[16];
-    unsigned short iReg;
-    
-    // program counter
-    unsigned short pc;
+  // registers
+  unsigned char vReg[16];
+  unsigned short iReg;
 
-    // graphics shiz
-    unsigned char gfx[64*32];
-    unsigned char drawFlag;
+  // program counter
+  unsigned short pc;
 
-    // timers
-    unsigned char delay_timer;
-    unsigned char sound_timer;
+  // graphics shiz
+  unsigned char gfx[64 * 32];
+  unsigned char drawFlag;
 
-    // stack shiz
-    unsigned short stack[16];
-    unsigned short sp;
+  // timers
+  unsigned char delay_timer;
+  unsigned char sound_timer;
 
-    unsigned char key[16];
+  // stack shiz
+  unsigned short stack[16];
+  unsigned short sp;
 
-    // op code functions
-    void CLS();
-    void RET();
-    void SYSaddr();
-    void JPaddr();
-    void CALLaddr();
-    void SEVxByte();
-    void SNEVxByte();
-    void SEVxVy();
-};
+  // user input stuff
+  unsigned char key[16];
+} chip8_t;
+
+// util functions
+void initialize(chip8_t* cpu);
+int loadGame(chip8_t* cpu, char* filename);
+
+// op code functions
+void CLS(chip8_t* cpu);
+void RET(chip8_t* cpu);
+void SYSaddr(chip8_t* cpu);
+void JPaddr(chip8_t* cpu);
+void CALLaddr(chip8_t* cpu);
+void SEVxByte(chip8_t* cpu);
+void SNEVxByte(chip8_t* cpu);
+void SEVxVy(chip8_t* cpu);
 
 #endif
