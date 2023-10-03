@@ -1,4 +1,6 @@
 #include "headers/chip8.h"
+#include <fstream>
+#include <iostream>
 
 // credit Laurence Muller for fontset("https://multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/"")
 unsigned char chip8_fontset[80] =
@@ -21,7 +23,7 @@ unsigned char chip8_fontset[80] =
   0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
-void chip8::initiatize()
+chip8::chip8()
 {
   pc = 0x200;
   opcode = 0;
@@ -50,7 +52,81 @@ int chip8::loadGame(std::string fileName)
 {
   int ret = -1;
 
-  // TODO: use fopen in binary mode to read rom
+  std::ifstream rom;
+  rom.open(fileName, std::ios::binary | std::ios::ate);
+
+  if (rom.is_open())
+  {
+    // get file size
+    std::streampos buffer_size = rom.tellg();
+    char* buffer = new char[buffer_size];
+
+    // read file
+    rom.seekg(0, std::ios::beg);
+    rom.read(buffer, buffer_size);
+    rom.close();
+
+    // load file into memory
+    for (int ii = 0; ii < buffer_size; ii++)
+      memory[0x200 + ii] = buffer[ii];
+  
+    delete[] buffer;
+    ret = 0;
+  }
 
   return ret;
+}
+
+void chip8::CLS()
+{
+  // clear display
+  for (int ii = 0; ii < (64*32); ii++)
+    gfx[ii] = 0;
+}
+
+void chip8::RET()
+{
+  pc = stack[sp];
+  --sp;
+}
+
+void chip8::SYSaddr()
+{
+  pc = opcode & 0x0FFF;
+}
+
+void chip8::JPaddr()
+{
+  pc = opcode & 0x0FFF;
+}
+
+void chip8::CALLaddr()
+{
+  ++sp;
+  stack[sp] = pc;
+  pc = opcode & 0x0FFF;
+}
+
+void chip8::SEVxByte()
+{
+  if (vReg[opcode & 0x0F00] == (opcode & 0x00FF))
+  {
+    pc += 2;
+  }
+}
+
+void chip8::SNEVxByte()
+{
+  if (vReg[opcode & 0x0F00] != (opcode & 0x00FF))
+  {
+    pc += 2;
+  }
+}
+
+void chip8::SEVxVy()
+{
+  if (vReg[opcode & 0x0F00] == vReg[opcode & 0x00F0])
+  {
+    pc += 2;
+  }
 }

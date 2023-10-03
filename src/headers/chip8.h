@@ -6,7 +6,7 @@
 class chip8
 {
   public:
-    void initiatize();
+    chip8();
     int loadGame(std::string fileName);
 
   private:
@@ -35,6 +35,16 @@ class chip8
     unsigned short sp;
 
     unsigned char key[16];
+
+    // op code functions
+    void CLS();
+    void RET();
+    void SYSaddr();
+    void JPaddr();
+    void CALLaddr();
+    void SEVxByte();
+    void SNEVxByte();
+    void SEVxVy();
 };
 
 #endif
