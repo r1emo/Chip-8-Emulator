@@ -44,5 +44,8 @@ void CALLaddr(chip8_t* cpu);
 void SEVxByte(chip8_t* cpu);
 void SNEVxByte(chip8_t* cpu);
 void SEVxVy(chip8_t* cpu);
+void LDVxByte(chip8_t* cpu);
+void ADDVxByte(chip8_t* cpu);
+void LDVxVy(chip8_t* cpu);
 
 #endif
