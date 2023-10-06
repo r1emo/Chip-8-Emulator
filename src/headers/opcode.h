@@ -15,5 +15,12 @@ void LDVxByte(chip8_t* cpu);
 void ADDVxByte(chip8_t* cpu);
 void LDVxVy(chip8_t* cpu);
 void ORVxVy(chip8_t* cpu);
+void ANDVxVy(chip8_t* cpu);
+void XORVxVy(chip8_t* cpu);
+void ADDVxVy(chip8_t* cpu);
+void SUBVxVy(chip8_t* cpu);
+void SHRVx(chip8_t* cpu);
+void SUBNVxVy(chip8_t* cpu);
+void SHLVx(chip8_t* cpu);
 
 #endif
