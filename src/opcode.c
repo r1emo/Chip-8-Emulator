@@ -1,4 +1,5 @@
 #include "headers/opcode.h"
+#include <time.h>
 
 void CLS(chip8_t* cpu)
 {
@@ -53,9 +54,7 @@ void SEVxVy(chip8_t* cpu)
   int regx = (cpu->opcode & 0x0F00) >> 8;
   int regy = (cpu->opcode & 0x00F0) >> 4;
   if (cpu->vReg[regx] == cpu->vReg[regy])
-  {
     cpu->pc += 4;
-  }
   else
     cpu->pc += 2;
 }
@@ -189,6 +188,39 @@ void SHLVx(chip8_t* cpu)
     cpu->vReg[0xF] = 0;
   
   cpu->vReg[regx] = cpu->vReg[regx] << 1;
+
+  cpu->pc += 2;
+}
+
+void SNEVxVy(chip8_t* cpu)
+{
+  int regx = (cpu->opcode & 0x0F00) >> 8;
+  int regy = (cpu->opcode & 0x00F0) >> 4;
+
+  if (cpu->vReg[regx] != cpu->vReg[regy])
+    cpu->pc += 4;
+  else
+    cpu->pc += 2;
+}
+
+void LDI(chip8_t* cpu)
+{
+  cpu->iReg = (cpu->opcode & 0x0FFF);
+  cpu->pc += 2;
+}
+
+void JPV0(chip8_t* cpu)
+{
+  cpu->pc = ((cpu->opcode & 0x0FFF) + cpu->vReg[0]);
+}
+
+void RNDVxByte(chip8_t* cpu)
+{
+  srand(time(0));
+
+  int rng = ((rand() & 256) & (cpu->opcode & 0x00FF));
+  int regx = (cpu->opcode & 0x0F00) >> 8;
+  cpu->vReg[regx] = rng;
 
   cpu->pc += 2;
 }

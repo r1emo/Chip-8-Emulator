@@ -22,5 +22,9 @@ void SUBVxVy(chip8_t* cpu);
 void SHRVx(chip8_t* cpu);
 void SUBNVxVy(chip8_t* cpu);
 void SHLVx(chip8_t* cpu);
+void SNEVxVy(chip8_t* cpu);
+void LDI(chip8_t* cpu);
+void JPV0(chip8_t* cpu);
+void RNDVxByte(chip8_t* cpu);
 
 #endif
