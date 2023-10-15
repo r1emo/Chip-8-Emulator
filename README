@@ -1,0 +1,5 @@
+Chip 8 Emulator written in C for a fun personal project.
+
+Very much a work in progress and it's probably an ugly mess since
+it's my first time doing a lot of this stuff. Might port to an iOS app
+one day and will probably work on Linux and Windows versions someday.

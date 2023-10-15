@@ -33,7 +33,7 @@ void CALLaddr(chip8_t* cpu)
 
 void SEVxByte(chip8_t* cpu)
 {
-  int reg = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short reg = (cpu->opcode & 0x0F00) >> 8;
   if (cpu->vReg[reg] == (cpu->opcode & 0x00FF))
     cpu->pc += 4;
   else
@@ -42,7 +42,7 @@ void SEVxByte(chip8_t* cpu)
 
 void SNEVxByte(chip8_t* cpu)
 {
-  int reg = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short reg = (cpu->opcode & 0x0F00) >> 8;
   if (cpu->vReg[reg] != (cpu->opcode & 0x00FF))
     cpu->pc += 4;
   else
@@ -51,8 +51,8 @@ void SNEVxByte(chip8_t* cpu)
 
 void SEVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
   if (cpu->vReg[regx] == cpu->vReg[regy])
     cpu->pc += 4;
   else
@@ -67,7 +67,7 @@ void LDVxByte(chip8_t* cpu)
 
 void ADDVxByte(chip8_t* cpu)
 {
-  int reg = (cpu->opcode * 0x0F00) >> 8;
+  unsigned short reg = (cpu->opcode * 0x0F00) >> 8;
   if (cpu->vReg[reg] > (0xFF - (cpu->opcode & 0x00FF)))
     cpu->vReg[0xF] = 1;
   else
@@ -79,8 +79,8 @@ void ADDVxByte(chip8_t* cpu)
 
 void LDVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
 
   cpu->vReg[regx] = cpu->vReg[regy];
 
@@ -89,8 +89,8 @@ void LDVxVy(chip8_t* cpu)
 
 void ORVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
 
   cpu->vReg[regx] = (cpu->vReg[regx] | cpu->vReg[regy]);
 
@@ -99,8 +99,8 @@ void ORVxVy(chip8_t* cpu)
 
 void ANDVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
 
   cpu->vReg[regx] = (cpu->vReg[regx] & cpu->vReg[regy]);
 
@@ -109,8 +109,8 @@ void ANDVxVy(chip8_t* cpu)
 
 void XORVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
 
   cpu->vReg[regx] = (cpu->vReg[regx] ^ cpu->vReg[regy]);
 
@@ -119,8 +119,8 @@ void XORVxVy(chip8_t* cpu)
 
 void ADDVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
 
   if (cpu->vReg[regx] > (0xFF - cpu->vReg[regy]))
     cpu->vReg[0xF] = 1;
@@ -134,8 +134,8 @@ void ADDVxVy(chip8_t* cpu)
 
 void SUBVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
 
   // for some reason VF is handled in reverse here from the adds, don't question it
   if (cpu->vReg[regx] > cpu->vReg[regy])
@@ -150,7 +150,7 @@ void SUBVxVy(chip8_t* cpu)
 
 void SHRVx(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
 
   if ((cpu->vReg[regx] & 1))
     cpu->vReg[0xF] = 1;
@@ -164,8 +164,8 @@ void SHRVx(chip8_t* cpu)
 
 void SUBNVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
 
   // for some reason VF is handled in reverse here from the adds, don't question it
   if (cpu->vReg[regy] > cpu->vReg[regx])
@@ -180,7 +180,7 @@ void SUBNVxVy(chip8_t* cpu)
 
 void SHLVx(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
 
   if ((cpu->vReg[regx] & 0x80))
     cpu->vReg[0xF] = 1;
@@ -194,8 +194,8 @@ void SHLVx(chip8_t* cpu)
 
 void SNEVxVy(chip8_t* cpu)
 {
-  int regx = (cpu->opcode & 0x0F00) >> 8;
-  int regy = (cpu->opcode & 0x00F0) >> 4;
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short regy = (cpu->opcode & 0x00F0) >> 4;
 
   if (cpu->vReg[regx] != cpu->vReg[regy])
     cpu->pc += 4;
@@ -218,9 +218,14 @@ void RNDVxByte(chip8_t* cpu)
 {
   srand(time(0));
 
-  int rng = ((rand() & 256) & (cpu->opcode & 0x00FF));
-  int regx = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short rng = ((rand() & 256) & (cpu->opcode & 0x00FF));
+  unsigned short regx = (cpu->opcode & 0x0F00) >> 8;
   cpu->vReg[regx] = rng;
 
   cpu->pc += 2;
+}
+
+void DXNY(chip8_t* cpu)
+{
+
 }
