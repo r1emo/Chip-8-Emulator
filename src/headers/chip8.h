@@ -3,6 +3,9 @@
 
 #include "opcode.h"
 
+int VIDEO_WIDTH = 64;
+int VIDEO_HEIGHT = 32;
+
 typedef struct
 {
   // current opcode
@@ -30,7 +33,7 @@ typedef struct
   unsigned short sp;
 
   // user input stuff
-  unsigned char key[16];
+  unsigned char keypad[16];
 } chip8_t;
 
 // util functions

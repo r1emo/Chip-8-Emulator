@@ -225,7 +225,54 @@ void RNDVxByte(chip8_t* cpu)
   cpu->pc += 2;
 }
 
-void DXNY(chip8_t* cpu)
+void DRWVxVyNib(chip8_t* cpu)
 {
+  // x position to start drawing sprite
+  unsigned short xPos = cpu->vReg[(cpu->opcode & 0x0F00) >> 8];
+  // y position to start drawing sprite
+  unsigned short yPos = cpu->vReg[(cpu->opcode & 0x00F0) >> 4];
+  // how many lines is the sprite
+  unsigned short height = (cpu->opcode & 0x000F);
 
+  cpu->vReg[0xF] = 0;
+
+  for (int yLine = 0; yLine < height; yLine++)
+  {
+    unsigned short sprite = cpu->memory[cpu->iReg + yLine];
+
+    // iterate through sprite byte for collision
+    for (int xLine = 0; xLine < 8; xLine++)
+    {
+      // if current bit is to be drawn
+      if ((sprite & (0x80 >> xLine)) != 0)
+      {
+        // check if current bit at screen location is drawn (collision)
+        if (cpu->gfx[(xPos + xLine + ((yPos + yLine) * 64))] == 1)
+          cpu->vReg[0xF] = 1; // Set flag for collision
+      }
+    }
+  }
+
+  cpu->drawFlag = 1;
+  cpu->pc += 2;
+}
+
+void SKPVx(chip8_t* cpu)
+{
+  unsigned short key = (cpu->opcode & 0x0F00) >> 8;
+
+  if (cpu->keypad[key])
+    cpu->pc += 4;
+  else
+    cpu->pc += 2;
+}
+
+void SKNPVx(chip8_t* cpu)
+{
+  unsigned short key = (cpu->opcode & 0x0F00) >> 8;
+
+  if (!cpu->keypad[key])
+    cpu->pc += 4;
+  else
+    cpu->pc += 2;
 }
