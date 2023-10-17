@@ -31,21 +31,20 @@ void initialize(chip8_t* cpu)
   cpu->sp = 0;
 
   // clear display
-  for (int ii = 0; ii < (64*32); ii++)
+  for (int ii = 0; ii < (64*32); ii++) // TODO: switch to memset
     cpu->gfx[ii] = 0;
 
   // clear registers v0-vF
-  for (int ii = 0; ii < 16; ii++)
+  for (int ii = 0; ii < 16; ii++) // TODO: switch to memset
     cpu->vReg[ii] = 0;
 
-  for (int ii = 0; ii < 4096; ii++)
+  for (int ii = 0; ii < 4096; ii++) // TODO: switch to memset
     cpu->memory[ii] = 0;
   
   // load fontset
   for (int ii = 0; ii < 80; ii++)
     cpu->memory[ii] = chip8_fontset[ii];
 
-  // TODO: reset timers
   cpu->sound_timer = 0;
 }
 

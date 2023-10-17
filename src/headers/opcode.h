@@ -29,5 +29,14 @@ void RNDVxByte(chip8_t* cpu);
 void DRWVxVyNib(chip8_t* cpu);
 void SKPVx(chip8_t* cpu);
 void SKNPVx(chip8_t* cpu);
+void LDVxDT(chip8_t* cpu);
+void LDVxK(chip8_t* cpu);
+void LDDTVx(chip8_t* cpu);
+void LDSTVx(chip8_t* cpu);
+void ADDIVx(chip8_t* cpu);
+void LDFVx(chip8_t* cpu);
+void LDBVx(chip8_t* cpu);
+void LDIVx(chip8_t* cpu);
+void LDVxI(chip8_t* cpu);
 
 #endif

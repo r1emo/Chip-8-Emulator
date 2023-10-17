@@ -276,3 +276,109 @@ void SKNPVx(chip8_t* cpu)
   else
     cpu->pc += 2;
 }
+
+void LDVxDT(chip8_t* cpu)
+{
+  unsigned short xReg = (cpu->opcode & 0x0F00) >> 8;
+  cpu->vReg[xReg] = cpu->delay_timer;
+
+  cpu->pc += 2;  
+}
+
+void LDVxK(chip8_t* cpu)
+{
+  int key = 0;
+  int found = 0;
+  unsigned short xReg = (cpu->opcode & 0x0F00) >> 8;
+
+  // cycle through keypad to find if key is pressed, if key is pressed store in Vx
+  while (!found || key < 16)
+  {
+    if (cpu->keypad[key] == 1)
+    {
+      cpu->vReg[xReg] = key;
+      found = 1;
+    }
+    else
+      key++;
+  }
+
+  // if key is pressed move on otherwise decrement pc and check again
+  if (key == 16)
+    cpu->pc -= 2;
+  else
+    cpu->pc += 2;
+}
+
+void LDDTVx(chip8_t* cpu)
+{
+  unsigned short xReg = (cpu->opcode & 0x0F00) >> 8;
+
+  cpu->delay_timer = cpu->vReg[xReg];
+
+  cpu->pc += 2;
+}
+
+void LDSTVx(chip8_t* cpu)
+{
+  unsigned short xReg = (cpu->opcode & 0x0F00) >> 8;
+
+  cpu->sound_timer = cpu->vReg[xReg];
+
+  cpu->pc += 2;
+}
+
+void ADDIVx(chip8_t* cpu)
+{
+  unsigned short xReg = (cpu->opcode & 0x0F00) >> 8;
+  cpu->iReg += cpu->vReg[xReg];
+
+  cpu->pc += 2;
+}
+
+void LDFVx(chip8_t* cpu)
+{
+  unsigned short xReg = (cpu->opcode & 0x0F00) >> 8;
+
+  cpu->iReg = cpu->vReg[xReg] * 5;
+  cpu->pc += 2;
+}
+
+void LDBVx(chip8_t* cpu)
+{
+  unsigned short xReg = (cpu->opcode & 0x0F00) >> 8;
+  unsigned short value = cpu->vReg[xReg];
+
+  // ones place
+  cpu->memory[cpu->iReg + 2] = value % 10;
+  value /= 10;
+
+  // tens place
+  cpu->memory[cpu->iReg + 1] = value % 10;
+  value /= 10;
+
+  // hundreds place
+  cpu->memory[cpu->iReg] = value % 10;
+
+  cpu->pc += 2;
+}
+
+void LDIVx(chip8_t* cpu)
+{
+  unsigned short maxReg = (cpu->opcode & 0x0F00) >> 8;
+
+  for (int ii = 0; ii <= maxReg; ii++)
+    cpu->memory[cpu->iReg + ii] = cpu->vReg[ii];
+
+  cpu->pc += 2;
+}
+
+void LDVxI(chip8_t* cpu)
+{
+  unsigned short maxReg = (cpu->opcode & 0x0F00) >> 8;
+
+  for (int ii = 0; ii <= maxReg; ii++)
+    cpu->vReg[ii] = cpu->memory[cpu->iReg + ii];
+
+  cpu->pc += 2;
+}
