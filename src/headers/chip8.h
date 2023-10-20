@@ -1,11 +1,6 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
-#include "opcode.h"
-
-int VIDEO_WIDTH = 64;
-int VIDEO_HEIGHT = 32;
-
 typedef struct
 {
   // current opcode

@@ -1,4 +1,5 @@
 #include "headers/opcode.h"
+#include <stdlib.h>
 #include <time.h>
 
 void CLS(chip8_t* cpu)
